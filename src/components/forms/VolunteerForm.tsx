@@ -10,6 +10,7 @@ interface VolunteerFormProps {
 
 export default function VolunteerForm({ onSuccess, className = "" }: VolunteerFormProps) {
   const [submitted, setSubmitted] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -43,14 +44,54 @@ export default function VolunteerForm({ onSuccess, className = "" }: VolunteerFo
     });
   };
 
+  const constructMailto = () => {
+    const subject = encodeURIComponent(`[Volunteer Application] ${formData.fullName}`);
+    const body = encodeURIComponent(
+      `Hello Kwagala Children's Foundation Team,
+
+Please find my Volunteer Application details below:
+
+Full Name: ${formData.fullName}
+Email Address: ${formData.email}
+Phone / WhatsApp: ${formData.phone}
+Location: ${formData.location}
+Availability: ${formData.availability}
+Selected Skills / Focus Areas: ${formData.skills.join(", ") || "General Support"}
+
+Motivation & Heart to Serve:
+${formData.motivation}
+
+Child Safeguarding Policy: Agreed (Strict zero-tolerance policy)
+
+---
+Sent via Kwagala Children's Foundation Volunteer Portal`
+    );
+    return `mailto:kwagalachildrensfoundation@gmail.com?subject=${subject}&body=${body}`;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.agreeSafeguarding) {
       alert("Please agree to our Child Safeguarding guidelines to submit your volunteer application.");
       return;
     }
+
+    const mailtoUrl = constructMailto();
+    if (typeof window !== "undefined") {
+      window.location.href = mailtoUrl;
+    }
+
     setSubmitted(true);
     if (onSuccess) onSuccess();
+  };
+
+  const handleCopy = () => {
+    const text = `Volunteer Application - Kwagala Children's Foundation\nFull Name: ${formData.fullName}\nEmail: ${formData.email}\nPhone: ${formData.phone}\nLocation: ${formData.location}\nAvailability: ${formData.availability}\nSkills: ${formData.skills.join(", ") || "General"}\n\nMotivation:\n${formData.motivation}`;
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    }
   };
 
   if (submitted) {
@@ -61,13 +102,35 @@ export default function VolunteerForm({ onSuccess, className = "" }: VolunteerFo
         </div>
         <div className="space-y-2">
           <h3 className="font-heading text-3xl font-bold text-[var(--kcf-emerald-dark)]">
-            Application Received!
+            Application Directed to General Email!
           </h3>
           <p className="text-[var(--kcf-text-muted)] text-base max-w-lg mx-auto leading-relaxed">
-            Thank you, <strong className="text-[var(--kcf-emerald-dark)]">{formData.fullName}</strong>. Your passion to volunteer with Kwagala Children&apos;s Foundation means the world to our children. Our volunteer coordinator will review your profile and contact you shortly via email/phone.
+            Thank you, <strong className="text-[var(--kcf-emerald-dark)]">{formData.fullName}</strong>. Your volunteer application is being directed to{" "}
+            <strong className="text-[var(--kcf-emerald)]">kwagalachildrensfoundation@gmail.com</strong>.
           </p>
         </div>
-        <div className="pt-4 flex justify-center">
+
+        <div className="p-4 rounded-2xl bg-white/80 border border-white max-w-md mx-auto text-left space-y-2 shadow-sm text-xs">
+          <p className="font-bold text-[var(--kcf-emerald-dark)]">Application Summary:</p>
+          <p><span className="text-[var(--kcf-text-muted)]">Recipient:</span> kwagalachildrensfoundation@gmail.com</p>
+          <p><span className="text-[var(--kcf-text-muted)]">Applicant:</span> {formData.fullName} ({formData.phone})</p>
+          <p><span className="text-[var(--kcf-text-muted)]">Focus:</span> {formData.skills.join(", ") || "General Support"}</p>
+        </div>
+
+        <div className="pt-2 flex flex-wrap gap-3 justify-center">
+          <a
+            href={constructMailto()}
+            className="px-5 py-3 rounded-2xl bg-[var(--kcf-green)] text-white text-xs font-bold shadow-md hover:bg-emerald-700 transition-colors"
+          >
+            ✉️ Re-open Mail App
+          </a>
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="px-5 py-3 rounded-2xl bg-white border border-gray-200 text-[var(--kcf-emerald-dark)] text-xs font-bold shadow-sm hover:bg-gray-50 transition-colors"
+          >
+            {copied ? "✓ Copied to Clipboard" : "📋 Copy Application Details"}
+          </button>
           <Button
             variant="secondary"
             onClick={() => {
@@ -84,6 +147,7 @@ export default function VolunteerForm({ onSuccess, className = "" }: VolunteerFo
                 agreeSafeguarding: false,
               });
             }}
+            className="text-xs"
           >
             Submit Another Application
           </Button>
@@ -105,7 +169,7 @@ export default function VolunteerForm({ onSuccess, className = "" }: VolunteerFo
           Join the Kwagala Volunteer Family
         </h2>
         <p className="text-[var(--kcf-text-primary)]/80 text-sm md:text-base mt-2 max-w-xl mx-auto">
-          Share your time, gifts, and compassion to inspire and nurture vulnerable children in Uganda and beyond.
+          Share your time, gifts, and compassion to inspire and nurture vulnerable children in Uganda and beyond. Submissions are delivered to <strong className="text-[var(--kcf-emerald-dark)] font-semibold">kwagalachildrensfoundation@gmail.com</strong>.
         </p>
       </div>
 
@@ -147,7 +211,7 @@ export default function VolunteerForm({ onSuccess, className = "" }: VolunteerFo
             <input
               type="tel"
               required
-              placeholder="+256 700 000000"
+              placeholder="+256 702 050 311"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               className="w-full px-4 py-3.5 rounded-2xl border border-black/10 bg-white/70 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-[var(--kcf-green)] text-sm font-medium"

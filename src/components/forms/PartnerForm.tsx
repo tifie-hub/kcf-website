@@ -10,6 +10,7 @@ interface PartnerFormProps {
 
 export default function PartnerForm({ onSuccess, className = "" }: PartnerFormProps) {
   const [submitted, setSubmitted] = useState(false);
+  const [copied, setCopied] = useState(false);
   const [formData, setFormData] = useState({
     organizationName: "",
     orgType: "Corporate / Business CSR",
@@ -46,10 +47,51 @@ export default function PartnerForm({ onSuccess, className = "" }: PartnerFormPr
     });
   };
 
+  const constructMailto = () => {
+    const subject = encodeURIComponent(
+      `[Partnership Proposal] ${formData.organizationName} - ${formData.contactName}`
+    );
+    const body = encodeURIComponent(
+      `Hello Kwagala Children's Foundation Team,
+
+Please find our Institutional / Corporate Partnership Proposal details below:
+
+Organization Name: ${formData.organizationName}
+Organization Type: ${formData.orgType}
+Contact Person: ${formData.contactName}
+Designation / Title: ${formData.contactTitle}
+Official Email: ${formData.email}
+Phone / WhatsApp: ${formData.phone}
+Website / Social URL: ${formData.website || "N/A"}
+Anticipated Timeline: ${formData.timeline}
+Selected Focus Areas: ${formData.focusAreas.join(", ") || "General Strategic Collaboration"}
+
+Proposal Overview & Objectives:
+${formData.proposalDetails}
+
+---
+Sent via Kwagala Children's Foundation Partnership Portal`
+    );
+    return `mailto:kwagalachildrensfoundation@gmail.com?subject=${subject}&body=${body}`;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const mailtoUrl = constructMailto();
+    if (typeof window !== "undefined") {
+      window.location.href = mailtoUrl;
+    }
     setSubmitted(true);
     if (onSuccess) onSuccess();
+  };
+
+  const handleCopy = () => {
+    const text = `Partnership Proposal - Kwagala Children's Foundation\nOrganization: ${formData.organizationName} (${formData.orgType})\nContact: ${formData.contactName} (${formData.contactTitle})\nEmail: ${formData.email}\nPhone: ${formData.phone}\nWebsite: ${formData.website || "N/A"}\nTimeline: ${formData.timeline}\nFocus: ${formData.focusAreas.join(", ") || "General"}\n\nOverview:\n${formData.proposalDetails}`;
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(text);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 3000);
+    }
   };
 
   if (submitted) {
@@ -60,13 +102,35 @@ export default function PartnerForm({ onSuccess, className = "" }: PartnerFormPr
         </div>
         <div className="space-y-2">
           <h3 className="font-heading text-3xl font-bold text-[var(--kcf-emerald-dark)]">
-            Partnership Proposal Received!
+            Partnership Proposal Directed to General Email!
           </h3>
           <p className="text-[var(--kcf-text-muted)] text-base max-w-lg mx-auto leading-relaxed">
-            Thank you, <strong className="text-[var(--kcf-emerald-dark)]">{formData.contactName}</strong> from <strong className="text-[var(--kcf-emerald-dark)]">{formData.organizationName}</strong>. We are thrilled at the prospect of collaborating to transform children&apos;s lives. Our partnerships team will review your proposal and reach out for an exploratory discussion.
+            Thank you, <strong className="text-[var(--kcf-emerald-dark)]">{formData.contactName}</strong> from <strong className="text-[var(--kcf-emerald-dark)]">{formData.organizationName}</strong>. Your proposal is being directed to{" "}
+            <strong className="text-[var(--kcf-emerald)]">kwagalachildrensfoundation@gmail.com</strong>.
           </p>
         </div>
-        <div className="pt-4 flex justify-center">
+
+        <div className="p-4 rounded-2xl bg-white/80 border border-white max-w-md mx-auto text-left space-y-2 shadow-sm text-xs">
+          <p className="font-bold text-[var(--kcf-emerald-dark)]">Proposal Summary:</p>
+          <p><span className="text-[var(--kcf-text-muted)]">Recipient:</span> kwagalachildrensfoundation@gmail.com</p>
+          <p><span className="text-[var(--kcf-text-muted)]">Organization:</span> {formData.organizationName}</p>
+          <p><span className="text-[var(--kcf-text-muted)]">Contact:</span> {formData.contactName} ({formData.email})</p>
+        </div>
+
+        <div className="pt-2 flex flex-wrap gap-3 justify-center">
+          <a
+            href={constructMailto()}
+            className="px-5 py-3 rounded-2xl bg-[var(--kcf-gold)] text-amber-950 text-xs font-bold shadow-md hover:bg-amber-400 transition-colors"
+          >
+            ✉️ Re-open Mail App
+          </a>
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="px-5 py-3 rounded-2xl bg-white border border-gray-200 text-[var(--kcf-emerald-dark)] text-xs font-bold shadow-sm hover:bg-gray-50 transition-colors"
+          >
+            {copied ? "✓ Copied to Clipboard" : "📋 Copy Proposal Details"}
+          </button>
           <Button
             variant="secondary"
             onClick={() => {
@@ -84,6 +148,7 @@ export default function PartnerForm({ onSuccess, className = "" }: PartnerFormPr
                 proposalDetails: "",
               });
             }}
+            className="text-xs"
           >
             Submit Another Proposal
           </Button>
@@ -105,7 +170,7 @@ export default function PartnerForm({ onSuccess, className = "" }: PartnerFormPr
           Partner for Sustainable Impact
         </h2>
         <p className="text-[var(--kcf-text-primary)]/80 text-sm md:text-base mt-2 max-w-xl mx-auto">
-          Collaborate with Kwagala Children&apos;s Foundation to expand educational, healthcare, and livelihood horizons for vulnerable children.
+          Collaborate with Kwagala Children&apos;s Foundation to expand educational, healthcare, and livelihood horizons for vulnerable children. Proposals are delivered directly to <strong className="text-[var(--kcf-emerald-dark)] font-semibold">kwagalachildrensfoundation@gmail.com</strong>.
         </p>
       </div>
 
@@ -193,7 +258,7 @@ export default function PartnerForm({ onSuccess, className = "" }: PartnerFormPr
             <input
               type="tel"
               required
-              placeholder="+256 700 000000"
+              placeholder="+256 702 050 311"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
               className="w-full px-4 py-3.5 rounded-2xl border border-black/10 bg-white/70 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-[var(--kcf-gold)] text-sm font-medium"

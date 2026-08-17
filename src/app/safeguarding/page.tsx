@@ -21,11 +21,11 @@ export default function SafeguardingPage() {
 
       <section className="py-12 md:py-20 px-4 md:px-8">
         <div className="container mx-auto max-w-5xl space-y-12">
-          
+
           <div className="glass-panel p-10 md:p-14 rounded-[2.5rem] space-y-6 border border-white/80 shadow-xl">
             <h2 className="font-heading text-3xl font-bold text-[var(--kcf-emerald-dark)]">Our Core Commitment</h2>
             <p className="border-l-4 border-[var(--kcf-pink)] pl-6 italic text-xl text-[var(--kcf-emerald-dark)] font-medium leading-relaxed bg-[var(--kcf-pale-pink)] py-4 pr-4 rounded-r-2xl">
-              "KCF is committed to ensuring that children participating in our programmes are treated with dignity and protected from abuse, exploitation, neglect and harm."
+              "Kwagala Children's Foundation is committed to ensuring that children participating in our programmes are treated with dignity and protected from abuse, exploitation, neglect and harm."
             </p>
             <p className="text-[var(--kcf-text-primary)] text-base md:text-lg leading-relaxed">
               At Kwagala Children's Foundation, we believe that every child has the fundamental right to grow up in a safe, nurturing environment. Safeguarding is not just a policy; it is integrated into everything we do, from program design to staff recruitment and community engagement.
@@ -61,12 +61,12 @@ export default function SafeguardingPage() {
             <p className="text-[var(--kcf-text-primary)] text-base leading-relaxed">
               If you have a safeguarding concern regarding a child, a staff member, a volunteer, or any KCF operations, we urge you to report it immediately. Reports are treated with total confidentiality and investigated thoroughly.
             </p>
-            
+
             <div className="glass-panel-dark rounded-3xl p-8 flex flex-col md:flex-row gap-6 items-center justify-between border border-white/20">
               <div>
                 <p className="font-bold text-white/90 text-sm mb-1 uppercase tracking-wider">Confidential Safeguarding Contact:</p>
-                <a href="mailto:safeguarding@kwagalachildren.org" className="text-xl md:text-2xl font-heading text-[var(--kcf-gold)] hover:underline font-bold">
-                  safeguarding@kwagalachildren.org
+                <a href="mailto:kwagalachildrensfoundation@gmail.com" className="text-xl md:text-2xl font-heading text-[var(--kcf-gold)] hover:underline font-bold break-all">
+                  kwagalachildrensfoundation@gmail.com
                 </a>
               </div>
               <Button href="/contact" variant="donate">Contact Us Securely</Button>
