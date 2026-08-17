@@ -1,26 +1,103 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-kcf-emerald: #14452F;
+  --color-kcf-emerald-dark: #0F291E;
+  --color-kcf-emerald-light: #22C55E;
+  --color-kcf-obsidian: #0B1310;
+  --color-kcf-green: #10B981;
+  --color-kcf-pink: #E11D48;
+  --color-kcf-gold: #F59E0B;
+  --color-kcf-neutral: #FAF9F6;
+  --color-kcf-pale-green: #F0FDF4;
+  --color-kcf-pale-pink: #FFF1F2;
+  --color-kcf-text-primary: #0F172A;
+  --color-kcf-text-muted: #64748B;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --kcf-emerald: #14452F;
+    --kcf-emerald-dark: #0F291E;
+    --kcf-emerald-light: #22C55E;
+    --kcf-obsidian: #0B1310;
+    --kcf-green: #10B981;
+    --kcf-pink: #E11D48;
+    --kcf-gold: #F59E0B;
+    --kcf-neutral: #FAF9F6;
+    --kcf-pale-green: #F0FDF4;
+    --kcf-pale-pink: #FFF1F2;
+    --kcf-text-primary: #0F172A;
+    --kcf-text-muted: #64748B;
+  }
+
+  body {
+    background-color: var(--kcf-neutral);
+    color: var(--kcf-text-primary);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Liquid Glass UI Utilities */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 20px 40px -15px rgba(15, 23, 42, 0.07), 0 0 1px 1px rgba(255, 255, 255, 0.8) inset;
 }
+
+.glass-panel-dark {
+  background: rgba(15, 41, 30, 0.82);
+  backdrop-filter: blur(24px) saturate(190%);
+  -webkit-backdrop-filter: blur(24px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.4), 0 0 1px 1px rgba(255, 255, 255, 0.1) inset;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 10px 30px -10px rgba(15, 41, 30, 0.08), 0 1px 0 0 rgba(255, 255, 255, 0.9) inset;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  transform: translateY(-6px) scale(1.01);
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 25px 50px -12px rgba(15, 41, 30, 0.16), 0 0 0 1px rgba(255, 255, 255, 0.9) inset;
+}
+
+.glass-pill {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+}
+
+.ambient-mesh {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.12) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(245, 158, 11, 0.12) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(225, 29, 72, 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(20, 69, 47, 0.15) 0px, transparent 50%);
+}
+
+.ambient-mesh-dark {
+  background-image: 
+    radial-gradient(at 10% 10%, rgba(16, 185, 129, 0.25) 0px, transparent 50%),
+    radial-gradient(at 90% 20%, rgba(245, 158, 11, 0.18) 0px, transparent 50%),
+    radial-gradient(at 80% 90%, rgba(225, 29, 72, 0.2) 0px, transparent 50%),
+    radial-gradient(at 0% 80%, rgba(15, 41, 30, 0.8) 0px, transparent 60%);
+}
+
